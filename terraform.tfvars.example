@@ -1,0 +1,2 @@
+ami_id      = "ami-xxxxxxxx"
+bucket_name = "example-bucket-name"
