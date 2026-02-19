@@ -111,6 +111,10 @@ resource "aws_instance" "web" {
   vpc_security_group_ids      = [aws_security_group.web_sg.id]
   user_data_replace_on_change = true
 
+  root_block_device {
+    encrypted = true
+  }
+
   metadata_options {
     http_endpoint = "enabled"
     http_tokens   = "required" # Tämä pakottaa IMDSv2 käyttöön
