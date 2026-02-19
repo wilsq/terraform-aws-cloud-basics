@@ -77,7 +77,7 @@ resource "aws_security_group" "web_sg" {
     from_port = 0
     to_port   = 0
     protocol  = "-1"
-    #tfsec:ignore:aws-ec2-no-public-ingress-sgr - Open for learning/testing purposes
+    #tfsec:ignore:aws-ec2-no-public-egress-sgr - Open for learning/testing purposes
     cidr_blocks = ["0.0.0.0/0"]
   }
 
