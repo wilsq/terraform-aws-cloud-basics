@@ -6,9 +6,9 @@ name: CI
 on:
   # Triggers the workflow on push or pull request events but only for the "master" branch
   push:
-    branches: [ "master" ]
+    branches: ["master"]
   pull_request:
-    branches: [ "master" ]
+    branches: ["master"]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -19,7 +19,6 @@ jobs:
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-
 
     # TÄMÄ OSA LUKEE TUNNUKSET SALAISUUKSISTA
     env:
@@ -47,6 +46,12 @@ jobs:
       # TÄMÄ VALIDOI SYNTAKSIN (validate)
       - name: Terraform Validate
         run: terraform validate
+
+      # SECURITY CHECK
+      - name: tfsec Security Scan
+        uses: aquasecurity/tfsec-action@v1.0.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
 
       # TÄMÄ NÄYTTÄÄ MITÄ MUUTOKSIA INFRALLE TEHTÄISIIN
       - name: Terraform Plan
