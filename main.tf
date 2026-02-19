@@ -1,5 +1,6 @@
 # VPC
 resource "aws_vpc" "this" {
+  #tfsec:ignore:aws-ec2-require-vpc-flow-logs-for-all-vpcs - Flow logs not required for this learning environment
   cidr_block = "10.0.0.0/16"
 
   tags = {
@@ -10,8 +11,9 @@ resource "aws_vpc" "this" {
 
 # Public Subnet
 resource "aws_subnet" "public" {
-  vpc_id                  = aws_vpc.this.id
-  cidr_block              = "10.0.1.0/24"
+  vpc_id     = aws_vpc.this.id
+  cidr_block = "10.0.1.0/24"
+  #tfsec:ignore:aws-ec2-no-public-ip-subnet - This is a public subnet for web traffic
   map_public_ip_on_launch = true
 
   tags = {
@@ -74,9 +76,10 @@ resource "aws_security_group" "web_sg" {
   }
 
   egress {
-    from_port = 0
-    to_port   = 0
-    protocol  = "-1"
+    description = "Allow all outbound traffic for updates and external services"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
     #tfsec:ignore:aws-ec2-no-public-egress-sgr - Open for learning/testing purposes
     cidr_blocks = ["0.0.0.0/0"]
   }
