@@ -77,6 +77,7 @@ resource "aws_security_group" "web_sg" {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
+    #tfsec:ignore:aws-ec2-no-public-ingress-sgr - Open for learning/testing purposes
     cidr_blocks = ["0.0.0.0/0"]
   }
 
@@ -109,6 +110,11 @@ resource "aws_instance" "web" {
   subnet_id                   = aws_subnet.public.id
   vpc_security_group_ids      = [aws_security_group.web_sg.id]
   user_data_replace_on_change = true
+
+  metadata_options {
+    http_endpoint = "enabled"
+    http_tokens   = "required" # Tämä pakottaa IMDSv2 käyttöön
+  }
 
 
   user_data = <<-EOF
